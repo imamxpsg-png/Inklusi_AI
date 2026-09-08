@@ -6,3 +6,4 @@ apscheduler
 gTTS
 pypdf
 python-docx
+beautifulsoup4
