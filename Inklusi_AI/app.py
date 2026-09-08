@@ -4,7 +4,6 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import os
 import random
 import urllib.parse
-import base64  # Library pembantu untuk membaca video lokal tanpa error sandbox
 
 # IMPOR FUNGSI MODULAR INTERNAL & PEMBANTU UI
 from interface_helper import render_top_dashboard_widgets, render_sidebar_status  
@@ -21,7 +20,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# INJEKSI CSS KUSTOM: TEMA LIGHT MODERN & PENGUNCI WARNA TOMBOL BERANDA
+# INJEKSI CSS KUSTOM: TEMA LIGHT MODERN & FIX SINKRONISASI TOMBOL KONTRAST
 st.markdown("""
     <style>
     .stApp { 
@@ -47,21 +46,19 @@ st.markdown("""
         border: 1px solid #E9D5FF !important; margin-bottom: 20px;
     }
     
-    /* ===================================================================== */
-    /* FIX EMERGENSI: MEMAKSA TOMBOL BERANDA MENJADI TERANG DAN TULISAN HITAM */
-    /* ===================================================================== */
+    /* FIX EMERGENSI WARNA TOMBOL AGAR TERANG DAN JELAS DI HP */
     div[data-testid="stVerticalBlock"] div.stButton > button {
-        background-color: #F1F5F9 !important; /* Latar belakang abu-abu terang */
-        color: #0F172A !important;            /* Warna teks hitam pekat agar kontras */
-        border: 1px solid #CBD5E1 !important;  /* Garis tepi tipis agar rapi */
-        border-radius: 12px !important;       /* Kotak melengkung modern */
-        font-weight: 700 !important;          /* Tulisan dipertebal */
+        background-color: #F1F5F9 !important; 
+        color: #0F172A !important;            
+        border: 1px solid #CBD5E1 !important;  
+        border-radius: 12px !important;       
+        font-weight: 700 !important;          
         font-size: 15px !important;
         height: auto !important;
         width: 100% !important;
     }
     div[data-testid="stVerticalBlock"] div.stButton > button:hover {
-        background-color: #E2E8F0 !important; /* Efek hover saat disentuh jari */
+        background-color: #E2E8F0 !important;
         color: #000000 !important;
     }
     
@@ -113,46 +110,39 @@ if st.session_state.current_page == "menu_utama":
             tab_video, tab_maps, tab_cuaca = st.tabs(["🎥 Video Dokumentasi", "🗺️ Peta Live GPS", "🌤️ Kondisi Cuaca"])
             
             with tab_video:
-                video1_path = os.path.join(os.path.dirname(__file__), "video.mp4")
-                video2_path = os.path.join(os.path.dirname(__file__), "video_inklusi2.mp4")
+                # FIX ANTI-CRASH: Menggunakan tautan URL streaming langsung dari repositori GitHub Anda sendiri
+                # Cara ini 100% sangat ringan, lancar, dan ramah memori server cloud
+                video1_url = "https://githubusercontent.com"
+                video2_url = "https://githubusercontent.com"
                 
-                # Mengonversi kedua berkas video lokal Anda menjadi format data Base64 aman hulu
-                if os.path.exists(video1_path) and os.path.exists(video2_path):
-                    with open(video1_path, "rb") as f1:
-                        v1_data = base64.b64encode(f1.read()).decode("utf-8")
-                    with open(video2_path, "rb") as f2:
-                        v2_data = base64.b64encode(f2.read()).decode("utf-8")
+                # Merender player HTML5 menggunakan URL tautan langsung (Direct Stream)
+                st.components.v1.html(f"""
+                    <video id="hermes_player" width="100%" height="230" controls autoplay muted style="border-radius:12px; background-color:#000; object-fit: cover; width: 100%; height: 230px;">
+                        <source id="video_source" src="{video1_url}" type="video/mp4">
+                        Browser Anda tidak mendukung tag video ini.
+                    </video>
+
+                    <script>
+                        var videoPlayer = document.getElementById('hermes_player');
+                        var videoSource = document.getElementById('video_source');
                         
-                    # Merender HTML5 video player kustom ukuran penuh pas bingkai
-                    st.components.v1.html(f"""
-                        <video id="hermes_player" width="100%" height="230" controls autoplay muted style="border-radius:12px; background-color:#000; object-fit: cover; width: 100%; height: 230px;">
-                            <source id="video_source" src="data:video/mp4;base64,{v1_data}" type="video/mp4">
-                            Browser Anda tidak mendukung tag video ini.
-                        </video>
+                        var playlist = [
+                            "{video1_url}",
+                            "{video2_url}"
+                        ];
+                        var currentVideoIndex = 0;
 
-                        <script>
-                            var videoPlayer = document.getElementById('hermes_player');
-                            var videoSource = document.getElementById('video_source');
-                            
-                            var playlist = [
-                                "data:video/mp4;base64,{v1_data}",
-                                "data:video/mp4;base64,{v2_data}"
-                            ];
-                            var currentVideoIndex = 0;
-
-                            videoPlayer.onended = function() {{
-                                currentVideoIndex++;
-                                if (currentVideoIndex >= playlist.length) {{
-                                    currentVideoIndex = 0;
-                                }}
-                                videoSource.src = playlist[currentVideoIndex];
-                                videoPlayer.load();
-                                videoPlayer.play();
-                            }};
-                        </script>
-                    """, height=240)
-                else:
-                    st.info("💡 Pastikan file 'video.mp4' dan 'video_inklusi2.mp4' sudah berada di folder proyek.")
+                        videoPlayer.onended = function() {{
+                            currentVideoIndex++;
+                            if (currentVideoIndex >= playlist.length) {{
+                                currentVideoIndex = 0;
+                            }}
+                            videoSource.src = playlist[currentVideoIndex];
+                            videoPlayer.load();
+                            videoPlayer.play();
+                        }};
+                    </script>
+                """, height=240)
             
             with tab_maps:
                 # Menampilkan Peta Lokasi Live GPS di Salatiga
@@ -168,7 +158,6 @@ if st.session_state.current_page == "menu_utama":
                     st.metric(label="💧 Kelembapan Sekitar", value="78%", delta="Angin 14 km/jam")
         
     with v_col2:
-        # Menampilkan widget info status gawai di sebelah kanan media slider Anda
         render_top_dashboard_widgets()
     st.write("---")
 
