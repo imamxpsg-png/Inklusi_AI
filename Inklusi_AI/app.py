@@ -161,11 +161,12 @@ if st.session_state.current_page == "menu_utama":
         <div class="running-banner-container">
             <div class="running-track">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdKjzrg_RSda0TzIKe9EA3yGkgFP4vlJ_YZX5K1EunpA&s" class="interactive-img">
-                <img src="{logo_unsw_url}" class="interactive-img">
-                <img src="{logo_unsw_url}" class="interactive-img">
-                <img src="{logo_unsw_url}" class="interactive-img">
-                <img src="{logo_unsw_url}" class="interactive-img">
-                <img src="{logo_unsw_url}" class="interactive-img">
+                <img src="https://itb.ac.id/files/77/20100320/1269071805.jpg" class="interactive-img">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f8/Nanyang_Technological_University_coat_of_arms_vector.svg/960px-Nanyang_Technological_University_coat_of_arms_vector.svg.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=thumbnail" class="interactive-img">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Logo_Unibuc_English.jpg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Tsinghua_University_Logo.svg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
+                <img src="https://upload.wikimedia.org/wikipedia/id/1/16/Lambang_Universitas_Harvard.svg?utm_source=id.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
+                <img src="https://upload.wikimedia.org/wikipedia/en/1/16/Zhejiang_University_Logo.svg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
             </div>
         </div>
     """, unsafe_allow_html=True)
@@ -202,15 +203,15 @@ if st.session_state.current_page == "menu_utama":
     with st.container(border=True):
         st.markdown("<b style='font-size: 13px; color: #1E3A8A;'>📺 PUSAT MEDIA INTERAKTIF & MULTI-ALARM DAFTAR</b>", unsafe_allow_html=True)
         
-        tab_galeri, tab_alarm, tab_maps, tab_cuaca = st.tabs(["📸 Galeri 5 Foto Kotak", "⏰ Multi-Alarm Kustom", "🗺️ Peta Live GPS", "🌤️ Kondisi Cuaca"])
+        tab_galeri, tab_alarm, tab_maps, tab_cuaca = st.tabs(["📸 Dokumentasi ", "⏰ Multi-Alarm Kustom", "🗺️ Peta Live GPS", "🌤️ Kondisi Cuaca"])
         
         with tab_galeri:
             # Jajaran 5 Foto untuk Galeri Kotak di bawah (Sengaja dibedakan agar bervariasi dengan banner atas)
-            foto1 = "https://unsplash.com"  # Robot AI
-            foto2 = "https://unsplash.com"  # Kolaborasi Pembelajaran
-            foto3 = "https://unsplash.com"  # Dashboard Web UI
-            foto4 = "https://unsplash.com"  # Diskusi Mahasiswa
-            foto5 = "https://unsplash.com"  # Cloud Computing
+            foto1 = "https://msftstories.thesourcemediaassets.com/sites/677/2024/09/COVER.png"  # Robot AI
+            foto2 = "https://www.idn.id/wp-content/uploads/2025/06/Featured-Image-Artikel-rbt-1024x640.jpg"  # Kolaborasi Pembelajaran
+            foto3 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS448wVH9Bk4PYnK9mF2Dlln4zQKv2LavNl82Hq3-StEYHGvYAQy4uhIAw&s=10"  # Dashboard Web UI
+            foto4 = "https://diengcyber.com/wp-content/uploads/2023/03/Internet-of-Things.jpg"  # Diskusi Mahasiswa
+            foto5 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKoHo8DD9w943pn-hV-859qdUeQmVq57EFXFr2z6Qhng&s=10"  # Cloud Computing
             
             # Merender Galeri Kotak Persegi Sempurna (Square Aspect Ratio 1:1) dengan navigasi halus
             st.components.v1.html(f"""
