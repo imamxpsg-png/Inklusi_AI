@@ -21,7 +21,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# INJEKSI CSS KUSTOM: TEMA LIGHT MODERN & BINGKAI KOTAK FITUR BERWARNA
+# INJEKSI CSS KUSTOM: TEMA LIGHT MODERN & PENGUNCI WARNA TOMBOL BERANDA
 st.markdown("""
     <style>
     .stApp { 
@@ -33,22 +33,36 @@ st.markdown("""
     .card-asisten {
         background-color: #F0FDF4 !important; padding: 24px; border-radius: 20px;
         border: 2px solid #BBF7D0 !important; margin-bottom: 20px;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04);
     }
     .card-sos {
         background-color: #FFF5F5 !important; padding: 24px; border-radius: 20px;
         border: 2px solid #FEB2B2 !important; margin-bottom: 20px;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04);
     }
     .card-obrolan {
         background-color: #F0FDFA !important; padding: 24px; border-radius: 20px;
         border: 1px solid #99F6E4 !important; margin-bottom: 20px;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04);
     }
     .card-dokumen {
         background-color: #FAF5FF !important; padding: 24px; border-radius: 20px;
         border: 1px solid #E9D5FF !important; margin-bottom: 20px;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04);
+    }
+    
+    /* ===================================================================== */
+    /* FIX EMERGENSI: MEMAKSA TOMBOL BERANDA MENJADI TERANG DAN TULISAN HITAM */
+    /* ===================================================================== */
+    div[data-testid="stVerticalBlock"] div.stButton > button {
+        background-color: #F1F5F9 !important; /* Latar belakang abu-abu terang */
+        color: #0F172A !important;            /* Warna teks hitam pekat agar kontras */
+        border: 1px solid #CBD5E1 !important;  /* Garis tepi tipis agar rapi */
+        border-radius: 12px !important;       /* Kotak melengkung modern */
+        font-weight: 700 !important;          /* Tulisan dipertebal */
+        font-size: 15px !important;
+        height: auto !important;
+        width: 100% !important;
+    }
+    div[data-testid="stVerticalBlock"] div.stButton > button:hover {
+        background-color: #E2E8F0 !important; /* Efek hover saat disentuh jari */
+        color: #000000 !important;
     }
     
     .main-title { color: #1E3A8A; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 26px; letter-spacing: -0.5px; margin-bottom: 0px; }
@@ -81,21 +95,17 @@ def start_scheduler():
     return scheduler
 sched = start_scheduler()
 
-# =====================================================================
 # KELOMPOK POSISI ATAS: JUDUL UTAMA TERLEBIH DAHULU
-# =====================================================================
 st.markdown("<h1 class='main-title'>🎙️ Hermes Universal Assistant</h1>", unsafe_allow_html=True)
 st.markdown("<p class='sub-title'>Asisten Disabilitas Otonom Berbasis Bingkai Kotak Ringkas Per Fitur</p>", unsafe_allow_html=True)
 st.write("---")
-
 # =====================================================================
 # TATA LETAK BARIS MEDIA PAS DI BAWAH TULISAN JUDUL (BERDAMPINGAN)
 # =====================================================================
-if st.session_state.current_page == "menu_utama" or st.session_state.current_page == "sos_terkirim_langsung":
+if st.session_state.current_page == "menu_utama":
     v_col1, v_col2 = st.columns(2)
     
     with v_col1:
-        # BINGKAI KOTAK INTERAKTIF: MEDIA SLIDER (VIDEO, MAPS, CUACA)
         with st.container(border=True):
             st.markdown("<b style='font-size: 13px; color: #1E3A8A;'>📺 PUSAT MEDIA INTERAKTIF (DAPAT DIGESER)</b>", unsafe_allow_html=True)
             
@@ -103,19 +113,17 @@ if st.session_state.current_page == "menu_utama" or st.session_state.current_pag
             tab_video, tab_maps, tab_cuaca = st.tabs(["🎥 Video Dokumentasi", "🗺️ Peta Live GPS", "🌤️ Kondisi Cuaca"])
             
             with tab_video:
-                # PERBAIKAN JALUR LOKAL RESMI: Mengunci pencarian file video tepat di folder tempat file app.py berjalan online
-                base_dir = os.path.dirname(__file__)
-                video1_path = os.path.join(base_dir, "video.mp4")
-                video2_path = os.path.join(base_dir, "video_inklusi2.mp4")
+                video1_path = os.path.join(os.path.dirname(__file__), "video.mp4")
+                video2_path = os.path.join(os.path.dirname(__file__), "video_inklusi2.mp4")
                 
-                # Mengonversi kedua berkas video lokal menjadi format data Base64 aman hulu
+                # Mengonversi kedua berkas video lokal Anda menjadi format data Base64 aman hulu
                 if os.path.exists(video1_path) and os.path.exists(video2_path):
                     with open(video1_path, "rb") as f1:
                         v1_data = base64.b64encode(f1.read()).decode("utf-8")
                     with open(video2_path, "rb") as f2:
                         v2_data = base64.b64encode(f2.read()).decode("utf-8")
                         
-                    # Merender HTML5 video player kustom
+                    # Merender HTML5 video player kustom ukuran penuh pas bingkai
                     st.components.v1.html(f"""
                         <video id="hermes_player" width="100%" height="230" controls autoplay muted style="border-radius:12px; background-color:#000; object-fit: cover; width: 100%; height: 230px;">
                             <source id="video_source" src="data:video/mp4;base64,{v1_data}" type="video/mp4">
@@ -144,7 +152,7 @@ if st.session_state.current_page == "menu_utama" or st.session_state.current_pag
                         </script>
                     """, height=240)
                 else:
-                    st.info("💡 Pastikan file 'video.mp4' dan 'video_inklusi2.mp4' sudah terunggah dengan benar di folder GitHub.")
+                    st.info("💡 Pastikan file 'video.mp4' dan 'video_inklusi2.mp4' sudah berada di folder proyek.")
             
             with tab_maps:
                 # Menampilkan Peta Lokasi Live GPS di Salatiga
