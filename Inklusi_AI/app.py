@@ -112,9 +112,9 @@ if st.session_state.current_page == "menu_utama":
             with tab_galeri:
                 # Tautan URL gambar ilustrasi beresolusi tinggi dari server cloud publik 
                 # (Sangat ringan, 100% anti-crash, dan responsif digeser pakai jari di HP)
-                foto1_url = "https://www.idn.id/belajar-dasar-robotik-hardware-software-dan-sensor/"
-                foto2_url = "https://news.microsoft.com/ai/"
-                foto3_url = "https://course-net.com/blog/cloud-computing-pengertian-cara-kerja-dan-contohnya/"
+                foto1_url = "https://msftstories.thesourcemediaassets.com/sites/677/2024/09/COVER.png"
+                foto2_url = "https://www.idn.id/wp-content/uploads/2025/06/Featured-Image-Artikel-rbt-1024x640.jpg"
+                foto3_url = "https://course-net.com/wp-content/uploads/2025/03/7199787_30495_11zon.webp"
                 
                 # Merender komponen slider/carousel foto interaktif murni menggunakan HTML/CSS/JS Swiper
                 st.components.v1.html(f"""
