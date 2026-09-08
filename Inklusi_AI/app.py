@@ -154,12 +154,13 @@ st.write("---")
 # BANNER LOGO UNIVERSITAS BERJALAN & INTERAKTIF (DIPISAH DI ATAS MEDIA)
 # =====================================================================
 if st.session_state.current_page == "menu_utama":
-    logo_unsw_url = "https://pinimg.com"
+    # FIX: Menggunakan Direct CDN Image Link yang valid, aman, dan anti-blokir untuk banner atas
+    logo_unsw_url = "https://unsplash.com"
     
     st.markdown(f"""
         <div class="running-banner-container">
             <div class="running-track">
-                <img src="{logo_unsw_url}" class="interactive-img">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdKjzrg_RSda0TzIKe9EA3yGkgFP4vlJ_YZX5K1EunpA&s" class="interactive-img">
                 <img src="{logo_unsw_url}" class="interactive-img">
                 <img src="{logo_unsw_url}" class="interactive-img">
                 <img src="{logo_unsw_url}" class="interactive-img">
@@ -204,12 +205,12 @@ if st.session_state.current_page == "menu_utama":
         tab_galeri, tab_alarm, tab_maps, tab_cuaca = st.tabs(["📸 Galeri 5 Foto Kotak", "⏰ Multi-Alarm Kustom", "🗺️ Peta Live GPS", "🌤️ Kondisi Cuaca"])
         
         with tab_galeri:
-            # 5 Jalur Link Gambar Murni bertema Teknologi Pendidikan Inklusi
-            foto1 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdKjzrg_RSda0TzIKe9EA3yGkgFP4vlJ_YZX5K1EunpA&s"  # Robot AI
-            foto2 = "https://unsplash.com"  # Aksesibilitas Layar Digital
-            foto3 = "https://unsplash.com"  # Kolaborasi Pembelajaran
-            foto4 = "https://unsplash.com"  # Dashboard Web UI
-            foto5 = "https://unsplash.com"  # Diskusi Mahasiswa Kampus
+            # Jajaran 5 Foto untuk Galeri Kotak di bawah (Sengaja dibedakan agar bervariasi dengan banner atas)
+            foto1 = "https://unsplash.com"  # Robot AI
+            foto2 = "https://unsplash.com"  # Kolaborasi Pembelajaran
+            foto3 = "https://unsplash.com"  # Dashboard Web UI
+            foto4 = "https://unsplash.com"  # Diskusi Mahasiswa
+            foto5 = "https://unsplash.com"  # Cloud Computing
             
             # Merender Galeri Kotak Persegi Sempurna (Square Aspect Ratio 1:1) dengan navigasi halus
             st.components.v1.html(f"""
