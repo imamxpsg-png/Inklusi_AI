@@ -76,7 +76,7 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(30, 58, 138, 0.25) !important;
     }
     
-    /* FIX FIX PERBAIKAN: STYLE ULTRA-SMOOTH CONTINUOUS MARQUEE BANNER */
+    /* STYLE BANNER MARQUEE BERJALAN */
     .running-banner-container {
         width: 100%;
         overflow: hidden;
@@ -91,11 +91,11 @@ st.markdown("""
     .running-track {
         display: flex;
         width: max-content;
-        animation: smoothMarquee 35s linear infinite; /* Kecepatan pas dan konstan */
+        animation: smoothMarquee 35s linear infinite;
     }
     
     .running-track:hover {
-        animation-play-state: paused; /* Berhenti saat disentuh mouse/jari */
+        animation-play-state: paused;
     }
     
     .interactive-img {
@@ -111,7 +111,6 @@ st.markdown("""
         filter: drop-shadow(0 0 10px rgba(30, 58, 138, 0.45)); 
     }
     
-    /* Rumus Animasi Transisi Geser Tanpa Cacat Hambatan */
     @keyframes smoothMarquee {
         0% { transform: translateX(0); }
         100% { transform: translateX(-50%); }
@@ -154,7 +153,7 @@ def start_scheduler():
     return scheduler
 sched = start_scheduler()
 
-# KELOMPOK POSISI ATAS: JUDUL UTAMA TERLEBIH DAHULU (SUDAH DISESUAIKAN UMUM)
+# KELOMPOK POSISI ATAS: JUDUL UTAMA TERLEBIH DAHULU
 st.markdown("<h1 class='main-title'>🤖 Hermes Productivity Assistant</h1>", unsafe_allow_html=True)
 st.markdown("<p class='sub-title'>Platform Kendali Navigasi Otonom & Pusat Manajemen Kerja Cerdas Terintegrasi</p>", unsafe_allow_html=True)
 
@@ -169,10 +168,11 @@ st.write("---")
 # BANNER LOGO UNIVERSITAS BERJALAN SMOOTH (DIPISAH DI ATAS MEDIA)
 # =====================================================================
 if st.session_state.current_page == "menu_utama":
-    st.markdown(f"""
+    # FIX TOTAL: Membungkus kode HTML menggunakan st.markdown agar dirender sebagai visual interaktif asli
+    st.markdown("""
         <div class="running-banner-container">
             <div class="running-track">
-                <!-- KODE LINK UNIVERSITAS ANDA DIJAGA UTUH TANPA DIGANTI SATU HURUF PUN (Set 1) -->
+                <!-- KODE LINK UNIVERSITAS ANDA DIJAGA 100% UTUH TANPA DIGANTI SATU HURUF PUN (Set 1) -->
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtuJCRQ0omwX8a5B-B1QXK7KzfNU97ZsrezMyvCsxOWqeFB_cW1H3Y1m1S&s=10" class="interactive-img">
                 <img src="https://images.seeklogo.com/logo-png/40/3/ntu-nanyang-technological-university-logo-png_seeklogo-405905.png" class="interactive-img">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Harvard_University_coat_of_arms.svg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
@@ -189,6 +189,7 @@ if st.session_state.current_page == "menu_utama":
                 <img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/16/Zhejiang_University_Logo.svg/1280px-Zhejiang_University_Logo.svg.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=thumbnail" class="interactive-img">
                 <img src="https://upload.wikimedia.org/wikipedia/sco/a/ad/Imperial_College_London_crest.svg?utm_source=sco.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Logo_Unibuc_English.jpg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
+                
             </div>
         </div>
     """, unsafe_allow_html=True)
@@ -228,11 +229,11 @@ if st.session_state.current_page == "menu_utama":
         
         with tab_galeri:
             # JALUR KODE FOTO TEKNOLOGI ANDA UTUH TANPA DIGANTI SATU HURUF PUN
-            foto1 = "https://thesourcemediaassets.com"  # Robot AI
-            foto2 = "https://idn.id"  # Hardware AI
-            foto3 = "https://gstatic.com"  # Dashboard Web UI
-            foto4 = "https://diengcyber.com"  # Internet of Things
-            foto5 = "https://gstatic.com"  # Cloud Computing
+            foto1 = "https://thesourcemediaassets.com"
+            foto2 = "https://idn.id"
+            foto3 = "https://gstatic.com"
+            foto4 = "https://diengcyber.com"
+            foto5 = "https://gstatic.com"
             
             # Merender Galeri Kotak Persegi Sempurna (Square Aspect Ratio 1:1) dengan navigasi halus
             st.components.v1.html(f"""
@@ -280,7 +281,7 @@ if st.session_state.current_page == "menu_utama":
                 </script>
             """, height=330)
         with tab_alarm:
-            st.markdown("<b style='font-size:14px; color:#1E3A8A;'> JADWAL MULTI-ALARM VOKAL:</b>", unsafe_allow_html=True)
+            st.markdown("<b style='font-size:14px; color:#1E3A8A;'>⏰ JADWAL MULTI-ALARM VOKAL:</b>", unsafe_allow_html=True)
             col_a1, col_a2 = st.columns(2)
             with col_a1: jam_pilihan = st.selectbox("Pilih Jam:", [f"{i:02d}" for i in range(24)], index=waktu_wib.hour, key="sb_jam_m")
             with col_a2: menit_pilihan = st.selectbox("Pilih Menit:", [f"{i:02d}" for i in range(60)], index=waktu_wib.minute, key="sb_menit_m")
