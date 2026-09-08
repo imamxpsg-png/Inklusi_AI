@@ -18,8 +18,12 @@ def render_top_dashboard_widgets():
     
     st.metric(label="🔋 Battery Health (Kondisi Fisik)", value="98% Prima", delta="Pengisian Normal")
     
-    waktu_sekarang = datetime.datetime.now().strftime("%H:%M WIB")
-    st.metric(label="⏰ Waktu Jam Digital Sistem", value=waktu_sekarang, delta="Sinkronisasi Server")
+    # FIX PERBAIKAN JAM: Menambahkan selisih +7 jam dari UTC agar server online Streamlit sinkron dengan waktu WIB asli
+    waktu_utc = datetime.datetime.utcnow()
+    waktu_wib = waktu_utc + datetime.timedelta(hours=7)
+    waktu_sekarang = waktu_wib.strftime("%H:%M WIB")
+    
+    st.metric(label="⏰ Waktu Jam Digital Sistem", value=waktu_sekarang, delta="Sinkronisasi Server WIB")
     
     st.metric(label="🌤️ Prediksi Cuaca Salatiga", value="26°C Berawan", delta="Kelembapan 78% Aman")
 
