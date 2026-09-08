@@ -1,0 +1,10 @@
+\streamlit==1.38.0
+google-genai
+gTTS==2.5.1
+beautifulsoup4==4.12.3
+requests==2.32.3
+psutil==5.9.8
+apscheduler==3.10.4
+streamlit-mic-recorder
+pypdf
+python-docx
