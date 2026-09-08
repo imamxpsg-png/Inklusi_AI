@@ -4,7 +4,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import os
 import random
 import urllib.parse
-import time  # Ditambahkan untuk menghitung latensi server kompetisi Hackfest
+import time
+from PIL import Image
 
 # IMPOR FUNGSI MODULAR INTERNAL & PEMBANTU UI
 from interface_helper import render_top_dashboard_widgets, render_sidebar_status  
@@ -29,8 +30,8 @@ st.markdown("""
         color: #0F172A;
     }
     
-    /* ANIMASI INTERAKTIF PADA KOTAK FITUR DI HALAMAN DEPAN */
-    .card-asisten, .card-sos, .card-obrolan, .card-dokumen {
+    /* ANIMASI INTERAKTIF PADA KOTAK FITUR */
+    .card-asisten, .card-sos, .card-obrolan, .card-dokumen, .card-hackfest {
         padding: 24px; 
         border-radius: 20px;
         margin-bottom: 20px;
@@ -38,27 +39,15 @@ st.markdown("""
         cursor: pointer;
     }
     
-    .card-asisten:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 12px 20px -5px rgba(21, 128, 61, 0.15), 0 0 15px 2px rgba(187, 247, 208, 0.6) !important;
-    }
-    .card-sos:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 12px 20px -5px rgba(153, 27, 27, 0.15), 0 0 15px 2px rgba(254, 178, 178, 0.6) !important;
-    }
-    .card-obrolan:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 12px 20px -5px rgba(4, 47, 46, 0.15), 0 0 15px 2px rgba(153, 246, 228, 0.6) !important;
-    }
-    .card-dokumen:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 12px 20px -5px rgba(107, 33, 168, 0.15), 0 0 15px 2px rgba(233, 213, 255, 0.6) !important;
+    .card-hackfest {
+        background-color: #F8FAFC !important;
+        border: 2px solid #CBD5E1 !important;
     }
     
-    .card-asisten { background-color: #F0FDF4 !important; border: 1px solid #BBF7D0 !important; }
-    .card-sos { background-color: #FFF5F5 !important; border: 1px solid #FEB2B2 !important; }
-    .card-obrolan { background-color: #F0FDFA !important; border: 1px solid #99F6E4 !important; }
-    .card-dokumen { background-color: #FAF5FF !important; border: 1px solid #E9D5FF !important; }
+    .card-hackfest:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 20px -5px rgba(30, 41, 59, 0.15), 0 0 15px 2px rgba(203, 213, 225, 0.6) !important;
+    }
     
     /* INTERAKTIF BUTTON: ANIMASI WARNA TOMBOL */
     div[data-testid="stVerticalBlock"] div.stButton > button {
@@ -117,19 +106,6 @@ st.markdown("""
         100% { transform: translateX(-100%); }
     }
     
-    /* STYLE UNTUK FITUR HACKFEST: AI WEATHER INSIGHT TICKER */
-    .ai-insight-marquee {
-        width: 100%; overflow: hidden; background: #1E3A8A; color: #FFFFFF !important;
-        padding: 8px 0; border-radius: 10px; font-size: 13px; font-weight: 500; margin-bottom: 15px;
-    }
-    .ai-insight-track {
-        display: flex; width: max-content; animation: insightMarquee 25s linear infinite;
-    }
-    @keyframes insightMarquee {
-        0% { transform: translateX(100vw); }
-        100% { transform: translateX(-100%); }
-    }
-    
     .main-title { color: #1E3A8A; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 26px; letter-spacing: -0.5px; margin-bottom: 0px; }
     .sub-title { color: #64748B; font-weight: 500; font-size: 14px; margin-top: 4px; }
     .status-text-bar { font-size: 13px; font-weight: 600; color: #475569; margin-top: 8px; background: #FFFFFF; padding: 8px 14px; border-radius: 10px; border: 1px solid #E2E8F0; display: inline-block; }
@@ -174,13 +150,9 @@ waktu_utc = datetime.datetime.utcnow()
 waktu_wib = waktu_utc + datetime.timedelta(hours=7)
 waktu_sekarang_str = waktu_wib.strftime("%H:%M")
 
-# FITUR VALUE HACKFEST: Menghitung Latensi Server Secara Riil
 start_time = time.time()
-# Simulasi ping kecil untuk akurasi metrik
 time.sleep(0.01)
 latency = round((time.time() - start_time) * 1000, 1)
-
-# Indikator lampu lalu lintas keselamatan data (Traffic Light Latency Indicator)
 status_lampu = "🟢 Cepat" if latency < 50 else "🟡 Sedang" if latency < 150 else "🔴 Lambat"
 
 st.markdown(f"<div class='status-text-bar'>⏰ {waktu_sekarang_str} WIB | 🎛️ Latensi Server Cloud: {latency} ms ({status_lampu})</div>", unsafe_allow_html=True)
@@ -193,23 +165,13 @@ if st.session_state.current_page == "menu_utama":
         <div class="running-banner-container">
             <div class="running-track">
                 <!-- KODE LINK UNIVERSITAS ANDA DIJAGA 100% UTUH TANPA DIGANTI SATU HURUF PUN -->
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtuJCRQ0omwX8a5B-B1QXK7KzfNU97ZsrezMyvCsxOWqeFB_cW1H3Y1m1S&s=10" class="interactive-img">
-                  <img src="https://images.seeklogo.com/logo-png/40/3/ntu-nanyang-technological-university-logo-png_seeklogo-405905.png" class="interactive-img">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Harvard_University_coat_of_arms.svg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
-                  <img src="https://itb.ac.id/files/77/20100320/1269071805.jpg" class="interactive-img">
-                  <img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/16/Zhejiang_University_Logo.svg/1280px-Zhejiang_University_Logo.svg.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=thumbnail" class="interactive-img">
-                  <img src="https://upload.wikimedia.org/wikipedia/sco/a/ad/Imperial_College_London_crest.svg?utm_source=sco.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Logo_Unibuc_English.jpg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
-                
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-
-    # VALUE VALUE FITUR HACKFEST: AI WEATHER INSIGHT TICKER (BARIS INFO BERJALAN OTOMATIS)
-    st.markdown("""
-        <div class="ai-insight-marquee">
-            <div class="ai-insight-track">
-                🤖 [HERMES AI INSIGHT COMPASS] Analisis Kondisi Cuaca Real-time Salatiga: Suhu berada di 26°C Berawan Aman. AI Merekomendasikan: Kondisi sangat ideal untuk fokus pengerjaan tugas kuliah kelompok di dalam ruangan maupun aktivitas produktivitas otonom di lab IT komputer hari ini! | Sinyal Enkripsi Aman | Validasi Protokol Sukses Terverifikasi Cloud Server.
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtuJCRQ0omwX8a5B-B1QXK7KzfNU97ZsrezMyvCsxOWqeFB_cW1H3Y1m1S&s=10" class="interactive-img">
+                <img src="https://images.seeklogo.com/logo-png/40/3/ntu-nanyang-technological-university-logo-png_seeklogo-405905.png" class="interactive-img">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Harvard_University_coat_of_arms.svg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
+                <img src="https://itb.ac.id/files/77/20100320/1269071805.jpg" class="interactive-img">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/16/Zhejiang_University_Logo.svg/1280px-Zhejiang_University_Logo.svg.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=thumbnail" class="interactive-img">
+                <img src="https://upload.wikimedia.org/wikipedia/sco/a/ad/Imperial_College_London_crest.svg?utm_source=sco.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Logo_Unibuc_English.jpg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
             </div>
         </div>
     """, unsafe_allow_html=True)
@@ -221,10 +183,19 @@ st.markdown("<b style='font-size: 14px; color: #1E3A8A;'>🎛️ PANEL KENDALI N
 
 pilihan_menu_dropdown = st.selectbox(
     "Pilih Halaman / Fitur yang Ingin Diaktifkan:",
-    options=["Dashboard Utama & Beranda", "🤖 Masuk Modul Asisten Multimodal AI", "💬 Masuk Modul Terjemahan Percakapan Live", "📚 Masuk Modul Rangkuman Dokumen Materi"],
+    options=[
+        "Dashboard Utama & Beranda", 
+        "🤖 Masuk Modul Asisten Multimodal AI", 
+        "💬 Masuk Modul Terjemahan Percakapan Live", 
+        "📚 Masuk Modul Rangkuman Dokumen Materi",
+        "🏆 [HACKFEST] Modul 1: Notulensi Diskusi & Ekstraktor Tugas",
+        "🛡️ [HACKFEST] Modul 2: Penyaring Keamanan & Kebocoran Data"
+    ],
     index=0 if st.session_state.current_page == "menu_utama" else 
           1 if st.session_state.current_page == "asisten_ai" else 
-          2 if st.session_state.current_page == "terjemahan_live" else 3,
+          2 if st.session_state.current_page == "terjemahan_live" else 
+          3 if st.session_state.current_page == "dokumen_materi" else
+          4 if st.session_state.current_page == "hf_notulensi" else 5,
     label_visibility="collapsed"
 )
 
@@ -236,6 +207,10 @@ elif pilihan_menu_dropdown == "💬 Masuk Modul Terjemahan Percakapan Live" and 
     st.session_state.current_page = "terjemahan_live"; st.rerun()
 elif pilihan_menu_dropdown == "📚 Masuk Modul Rangkuman Dokumen Materi" and st.session_state.current_page != "dokumen_materi":
     st.session_state.current_page = "dokumen_materi"; st.rerun()
+elif pilihan_menu_dropdown == "🏆 [HACKFEST] Modul 1: Notulensi Diskusi & Ekstraktor Tugas" and st.session_state.current_page != "hf_notulensi":
+    st.session_state.current_page = "hf_notulensi"; st.rerun()
+elif pilihan_menu_dropdown == "🛡️ [HACKFEST] Modul 2: Penyaring Keamanan & Kebocoran Data" and st.session_state.current_page != "hf_security":
+    st.session_state.current_page = "hf_security"; st.rerun()
 
 st.write("") 
 # =====================================================================
@@ -271,12 +246,13 @@ if st.session_state.current_page == "menu_utama":
     with st.container(border=True):
         st.markdown("<b style='font-size: 13px; color: #1E3A8A;'>📸 1. DOKUMENTASI PROYEK & PRODUKTIVITAS JALAN</b>", unsafe_allow_html=True)
         
-        # JALUR KODE FOTO TEKNOLOGI ANDA UTUH TANPA DIGANTI SATU HURUF PUN
+        # JALUR KODE FOTO TEKNOLOGI ANDA UTUH TANPA DIGANTI SATU HURUF PUN [LR1s9q]
         foto1 = "https://thesourcemediaassets.com"
         foto2 = "https://idn.id"
         foto3 = "https://gstatic.com"
         foto4 = "https://diengcyber.com"
         foto5 = "https://gstatic.com"
+        
         st.components.v1.html(f"""
             <div id="box_carousel" style="position: relative; max-width: 300px; margin: 0 auto; aspect-ratio: 1 / 1; border-radius: 16px; overflow: hidden; background-color: #1a1a1a; box-shadow: 0 8px 20px rgba(0,0,0,0.2); border: 2px solid #E2E8F0;">
                 
@@ -322,6 +298,7 @@ if st.session_state.current_page == "menu_utama":
                 updateCarousel();
             </script>
         """, height=330)
+
     # --- BARIS 2 KE BAWAH: DATA GEOGRAFI PETA LIVE GPS DINAMIS ---
     with st.container(border=True):
         st.markdown("<b style='font-size: 13px; color: #1E3A8A;'>🗺️ 2. PETA NAVIGASI LIVE GPS GEOLOCATION</b>", unsafe_allow_html=True)
@@ -333,19 +310,88 @@ if st.session_state.current_page == "menu_utama":
     with st.container(border=True):
         st.markdown("<b style='font-size: 13px; color: #1E3A8A;'>🌤️ 3. PUSAT PEMANTAUAN KONDISI CUACA SALATIGA</b>", unsafe_allow_html=True)
         c_col1, c_col2 = st.columns(2)
-        with c_col1: 
-            st.metric(label="🌡️ Temperatur Udara", value="24°C", delta="Normal")
-        with c_col2: 
-            st.metric(label="💧 Kelembapan Sekitar", value="78%", delta="Aman Berawan")
-
+        with c_col1: st.metric(label="🌡️ Temperatur Udara", value="24°C", delta="Normal")
+        with c_col2: st.metric(label="💧 Kelembapan Sekitar", value="78%", delta="Aman Berawan")
     st.write("---")
-
 # =====================================================================
 # 3. ROUTER NAVIGASI DASHBOARD (SISTEM SINKRONISASI DROPDOWN ATAS)
 # =====================================================================
 elif st.session_state.current_page == "asisten_ai":
     render_asisten_ai(client, sched, mode="asisten")
+
 elif st.session_state.current_page == "terjemahan_live":
     render_live_chat(client)
+
 elif st.session_state.current_page == "dokumen_materi":
     render_sidebar_status(active_keys, client, mode="dokumen")
+
+# -----------------------------------------------------------------
+# INOVASI HACKFEST 1: AUTOMATED MEETING MINUTES & TASK EXTRACTOR
+# -----------------------------------------------------------------
+elif st.session_state.current_page == "hf_notulensi":
+    st.markdown("""
+        <div class='card-hackfest'>
+            <h3 style='color: #1E3A8A; margin: 0;'>🏆 Hackfest Modul 1: Notulensi Diskusi & Ekstraktor Tugas Cerdas</h3>
+            <p style='color: #475569; font-size:12px; margin: 4px 0 20px 0;'>Unggah file rekaman suara rapat kelompok atau perkuliahan Anda (.wav, .mp3) untuk diubah otomatis menjadi risalah keputusan resmi.</p>
+    """, unsafe_allow_html=True)
+    
+    audio_file_hf = st.file_uploader("Pilih file audio diskusi kelompok Anda:", type=["wav", "mp3"], key="hf_audio_uploader")
+    
+    if audio_file_hf is not None and client:
+        with st.spinner("Gemini AI sedang menganalisis gelombang suara diskusi..."):
+            try:
+                from google.genai import types
+                # AI memproses konversi suara panjang secara komprehensif menjadi laporan formal
+                prompt_hf1 = "Ekstrak audio ini menjadi: 1. Transkrip bersih, 2. Poin ringkasan draf keputusan rapat, 3. To-Do List daftar tugas beserta PIC pengerjaan jika ada. Tulis dalam Bahasa Indonesia yang formal."
+                res_hf1 = client.models.generate_content(
+                    model='gemini-2.5-flash', 
+                    contents=[types.Part.from_bytes(data=audio_file_hf.read(), mime_type='audio/wav'), prompt_hf1]
+                )
+                if res_hf1.text:
+                    st.success("✓ Laporan Notulensi Rapat Berhasil Disusun!")
+                    st.markdown("### 📋 Hasil Dokumentasi Rapat Resmi:")
+                    st.write(res_hf1.text.strip())
+            except Exception as e:
+                st.error(f"Gagal memproses data audio: {e}")
+    st.markdown("</div>", unsafe_allow_html=True)
+
+# -----------------------------------------------------------------
+# INOVASI HACKFEST 2: AI SECURITY SCANNER & PII DATA FILTER
+# -----------------------------------------------------------------
+elif st.session_state.current_page == "hf_security":
+    st.markdown("""
+        <div class='card-hackfest'>
+            <h3 style='color: #991B1B; margin: 0;'>🛡️ Hackfest Modul 2: Penyaring Keamanan & Deteksi Kebocoran Data (PII Filter)</h3>
+            <p style='color: #475569; font-size:12px; margin: 4px 0 20px 0;'>Validasi keamanan berkas teks materi atau gambar tugas Anda sebelum dilempar ke cloud publik untuk mencegah kebocoran informasi sensitif.</p>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("<b style='font-size:13px;'>Pilih Metode Pemindaian Berkas:</b>", unsafe_allow_html=True)
+    tab_scan_teks, tab_scan_gambar = st.tabs(["📄 Pindai File Teks (.txt)", "📸 Pindai Gambar Tugas"])
+    
+    with tab_scan_teks:
+        file_teks_hf = st.file_uploader("Unggah file teks Anda:", type=["txt"], key="hf_txt_scan")
+        if file_teks_hf is not None and client:
+            isi_teks_raw = file_teks_hf.read().decode("utf-8")
+            st.text_area("Isi Berkas Terbaca:", isi_teks_raw, height=100)
+            
+            if st.button("🛡️ JALANKAN PEMINDAIAN DATA SENSITIF", key="btn_scan_txt", use_container_width=True):
+                with st.spinner("Sistem sedang memindai kebocoran data pribadi..."):
+                    prompt_hf2 = f"Periksa apakah teks berikut mengandung data sensitif pribadi (seperti password, email pribadi, nomor HP, nomor rekening, PIN, atau alamat rumah): '{isi_teks_raw}'. Jika ada, sebutkan datanya dan berikan peringatan keamanan. Jika bersih, katakan berkas aman."
+                    res_hf2 = client.models.generate_content(model='gemini-2.5-flash', contents=prompt_hf2)
+                    st.markdown("##### 🛡️ Laporan Audit Keamanan Data:")
+                    st.write(res_hf2.text.strip())
+                    
+    with tab_scan_gambar:
+        file_img_hf = st.file_uploader("Unggah foto lembar tugas Anda:", type=["png", "jpg", "jpeg"], key="hf_img_scan")
+        if file_img_hf is not None and client:
+            img_hf = Image.open(file_img_hf)
+            st.image(img_hf, caption="Pratinjau Gambar Audit", width=250)
+            
+            if st.button("🛡️ PINDAI TEKS DI DALAM GAMBAR", key="btn_scan_img", use_container_width=True):
+                with st.spinner("AI memindai karakter tulisan di dalam gambar..."):
+                    prompt_hf3 = ["Analisa tulisan di dalam gambar ini. Apakah ada data pribadi sensitif seperti nomor kontak, sandi rahasia, atau data pribadi penting? Berikan penilaian status keamanan (AMAN atau WASPADA).", img_hf]
+                    res_hf3 = client.models.generate_content(model='gemini-2.5-flash', contents=prompt_hf3)
+                    st.markdown("##### 🛡️ Laporan Hasil Analisis Citra Gambar:")
+                    st.write(res_hf3.text.strip())
+                    
+    st.markdown("</div>", unsafe_allow_html=True)
