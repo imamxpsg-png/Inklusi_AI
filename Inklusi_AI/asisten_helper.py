@@ -15,7 +15,8 @@ def render_asisten_ai(client, sched, mode="asisten"):
                 <p style='color: #374151; font-size:12px; margin: 4px 0 20px 0;'>Interaksi pintar dengan gaya Google Gemini. Tekan tombol [+] untuk memunculkan menu lampiran berkas atau tombol mikrofon untuk merekam suara.</p>
         """, unsafe_allow_html=True)
 
-        # --- INJEKSI CSS REKAYASA KAPSUL GEMINI BAR ASLI 100% RAPI ---
+        # --- FIX UTAMA: MENGISOLASI CSS AGAR TIDAK MERUSAK TOMBOL BERANDA ---
+        # Menambahkan nama kelas pembungkus spesifik (.gemini-capsule-bar) sebelum div.stButton
         st.markdown("""
             <style>
             /* Wadah Kapsul Hitam Utama */
@@ -41,7 +42,7 @@ def render_asisten_ai(client, sched, mode="asisten"):
                 outline: none !important;
             }
             
-            /* Mengubah gaya tombol Streamlit biasa menjadi ikon lingkaran minimalis */
+            /* FIX: Hanya tombol di dalam kelas .gemini-capsule-bar yang diubah menjadi bulat hitam */
             .gemini-capsule-bar div.stButton > button {
                 background-color: #2f3032 !important;
                 color: #e3e2e6 !important;
@@ -71,7 +72,7 @@ def render_asisten_ai(client, sched, mode="asisten"):
         # --- KONSTRUKSI BAR HORIZONTAL MANDIRI MENGGUNAKAN COLUMNS ASLI ---
         st.markdown("<div class='gemini-capsule-bar'>", unsafe_allow_html=True)
         
-        # FIX PERBAIKAN: Menambahkan angka 3 ke dalam fungsi st.columns agar tidak memicu TypeError
+        # Membagi 3 kolom proporsional (Kiri untuk +, Tengah untuk Teks, Kanan untuk Mic)
         bar_col1, bar_col2, bar_col3 = st.columns(3)
         
         with bar_col1:
@@ -131,7 +132,7 @@ def render_asisten_ai(client, sched, mode="asisten"):
                             if uploaded_media.name.endswith((".png", ".jpg", ".jpeg")):
                                 image = Image.open(uploaded_media)
                                 isi_konten.append(image)
-                                st.image(image, caption="📷 Gambar Terlampir", width=250)
+                                st.image(image, caption="📸 Gambar Terlampir", width=250)
                             elif uploaded_media.name.endswith(".txt"):
                                 isi_konten.append(uploaded_media.read().decode("utf-8"))
                         
