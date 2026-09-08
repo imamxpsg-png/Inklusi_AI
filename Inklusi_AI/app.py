@@ -205,7 +205,7 @@ if st.session_state.current_page == "menu_utama":
         
         with tab_galeri:
             # 5 Jalur Link Gambar Murni bertema Teknologi Pendidikan Inklusi
-            foto1 = "https://unsplash.com"  # Robot AI
+            foto1 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdKjzrg_RSda0TzIKe9EA3yGkgFP4vlJ_YZX5K1EunpA&s"  # Robot AI
             foto2 = "https://unsplash.com"  # Aksesibilitas Layar Digital
             foto3 = "https://unsplash.com"  # Kolaborasi Pembelajaran
             foto4 = "https://unsplash.com"  # Dashboard Web UI
