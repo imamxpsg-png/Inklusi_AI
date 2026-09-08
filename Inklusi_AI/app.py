@@ -20,7 +20,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# INJEKSI CSS KUSTOM: TEMA LIGHT MODERN, ANIMASI GLOW KOTAK, & ULTRA-SMOOTH MARQUEE
+# INJEKSI CSS KUSTOM: TEMA LIGHT MODERN, ANIMASI GLOW KOTAK, & ULTRA-SMOOTH SINGLE TRACK MARQUEE
 st.markdown("""
     <style>
     .stApp { 
@@ -76,7 +76,7 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(30, 58, 138, 0.25) !important;
     }
     
-    /* STYLE BANNER MARQUEE BERJALAN */
+    /* STYLE BANNER MARQUEE 1 ALUR MURNI */
     .running-banner-container {
         width: 100%;
         overflow: hidden;
@@ -91,7 +91,7 @@ st.markdown("""
     .running-track {
         display: flex;
         width: max-content;
-        animation: smoothMarquee 35s linear infinite;
+        animation: smoothMarquee 20s linear infinite;
     }
     
     .running-track:hover {
@@ -111,9 +111,10 @@ st.markdown("""
         filter: drop-shadow(0 0 10px rgba(30, 58, 138, 0.45)); 
     }
     
+    /* Animasi Geser 1 Alur Bersih dari Kanan ke Kiri Murni */
     @keyframes smoothMarquee {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
+        0% { transform: translateX(100vw); }
+        100% { transform: translateX(-100%); }
     }
     
     .main-title { color: #1E3A8A; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 26px; letter-spacing: -0.5px; margin-bottom: 0px; }
@@ -165,15 +166,14 @@ waktu_sekarang_str = waktu_wib.strftime("%H:%M")
 st.markdown(f"<div class='status-text-bar'>⏰ {waktu_sekarang_str} WIB | 🌤️ Status: Sistem Multi-Tasking Siaga Aktif</div>", unsafe_allow_html=True)
 st.write("---")
 # =====================================================================
-# BANNER LOGO UNIVERSITAS BERJALAN SMOOTH (DIPISAH DI ATAS MEDIA)
+# BANNER LOGO UNIVERSITAS 1 ALIRAN TUNGGAL BERSIH (ANTI-TEKS MENTAH)
 # =====================================================================
 if st.session_state.current_page == "menu_utama":
-    # FIX TOTAL: Membungkus kode HTML menggunakan st.markdown agar dirender sebagai visual interaktif asli
+    # FIX TOTAL: Hanya 1 aliran murni, ramah memori server cloud dan anti-eror teks
     st.markdown("""
         <div class="running-banner-container">
             <div class="running-track">
-                <!-- KODE LINK UNIVERSITAS ANDA DIJAGA 100% UTUH TANPA DIGANTI SATU HURUF PUN (Set 1) -->
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtuJCRQ0omwX8a5B-B1QXK7KzfNU97ZsrezMyvCsxOWqeFB_cW1H3Y1m1S&s=10" class="interactive-img">
+               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtuJCRQ0omwX8a5B-B1QXK7KzfNU97ZsrezMyvCsxOWqeFB_cW1H3Y1m1S&s=10" class="interactive-img">
                 <img src="https://images.seeklogo.com/logo-png/40/3/ntu-nanyang-technological-university-logo-png_seeklogo-405905.png" class="interactive-img">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Harvard_University_coat_of_arms.svg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
                 <img src="https://itb.ac.id/files/77/20100320/1269071805.jpg" class="interactive-img">
@@ -181,10 +181,40 @@ if st.session_state.current_page == "menu_utama":
                 <img src="https://upload.wikimedia.org/wikipedia/sco/a/ad/Imperial_College_London_crest.svg?utm_source=sco.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Logo_Unibuc_English.jpg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
                 
-                
             </div>
         </div>
     """, unsafe_allow_html=True)
+
+# =====================================================================
+# INTERAKTIF MENU NAVIGATION DROPDOWN (DI ATAS SEBELUM PUSAT DATA)
+# =====================================================================
+st.markdown("<b style='font-size: 14px; color: #1E3A8A;'>🎛️ PANEL KENDALI NAVIGASI UTAMA ASISTEN:</b>", unsafe_allow_html=True)
+
+# Membuat peta navigasi halaman menggunakan st.selectbox (Dropdown Menu Atas)
+pilihan_menu_dropdown = st.selectbox(
+    "Pilih Halaman / Fitur yang Ingin Diaktifkan:",
+    options=["Dashboard Utama & Beranda", "🤖 Masuk Modul Asisten Multimodal AI", "💬 Masuk Modul Terjemahan Percakapan Live", "📚 Masuk Modul Rangkuman Dokumen Materi"],
+    index=0 if st.session_state.current_page == "menu_utama" else 
+          1 if st.session_state.current_page == "asisten_ai" else 
+          2 if st.session_state.current_page == "terjemahan_live" else 3,
+    label_visibility="collapsed"
+)
+
+# Menghubungkan klik pilihan dropdown dengan router perpindahan halaman internal
+if pilihan_menu_dropdown == "Dashboard Utama & Beranda" and st.session_state.current_page != "menu_utama":
+    st.session_state.current_page = "menu_utama"
+    st.rerun()
+elif pilihan_menu_dropdown == "🤖 Masuk Modul Asisten Multimodal AI" and st.session_state.current_page != "asisten_ai":
+    st.session_state.current_page = "asisten_ai"
+    st.rerun()
+elif pilihan_menu_dropdown == "💬 Masuk Modul Terjemahan Percakapan Live" and st.session_state.current_page != "terjemahan_live":
+    st.session_state.current_page = "terjemahan_live"
+    st.rerun()
+elif pilihan_menu_dropdown == "📚 Masuk Modul Rangkuman Dokumen Materi" and st.session_state.current_page != "dokumen_materi":
+    st.session_state.current_page = "dokumen_materi"
+    st.rerun()
+
+st.write("") # Jarak pemisah pembatas
 # =====================================================================
 # TATA LETAK BARIS MEDIA PENUH (SISTEM SATU KOLOM LUAS)
 # =====================================================================
@@ -313,20 +343,11 @@ if st.session_state.current_page == "menu_utama":
     st.write("---")
 
 # =====================================================================
-# 3. ROUTER NAVIGASI DASHBOARD
+# 3. ROUTER NAVIGASI DASHBOARD (SISTEM SINKRONISASI DROPDOWN)
 # =====================================================================
-if st.session_state.current_page == "menu_utama":
-    render_dashboard_menu()
 elif st.session_state.current_page == "asisten_ai":
-    if st.button("⬅️ KEMBALI KE DASHBOARD UTAMA", use_container_width=True): st.session_state.current_page = "menu_utama"; st.rerun()
     render_asisten_ai(client, sched, mode="asisten")
-elif st.session_state.current_page == "modul_sos":
-    if st.button("⬅️ KEMBALI KE DASHBOARD UTAMA", use_container_width=True): st.session_state.current_page = "menu_utama"; st.rerun()
-    from sos_helper import render_sos_menu
-    render_sos_menu()
 elif st.session_state.current_page == "terjemahan_live":
-    if st.button("⬅️ KEMBALI KE DASHBOARD UTAMA", use_container_width=True): st.session_state.current_page = "menu_utama"; st.rerun()
     render_live_chat(client)
 elif st.session_state.current_page == "dokumen_materi":
-    if st.button("⬅️ KEMBALI KE DASHBOARD UTAMA", use_container_width=True): st.session_state.current_page = "menu_utama"; st.rerun()
     render_sidebar_status(active_keys, client, mode="dokumen")
