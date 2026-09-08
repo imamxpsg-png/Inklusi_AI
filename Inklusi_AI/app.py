@@ -103,17 +103,19 @@ if st.session_state.current_page == "menu_utama" or st.session_state.current_pag
             tab_video, tab_maps, tab_cuaca = st.tabs(["🎥 Video Dokumentasi", "🗺️ Peta Live GPS", "🌤️ Kondisi Cuaca"])
             
             with tab_video:
-                video1_path = "video.mp4"
-                video2_path = "video_inklusi2.mp4"
+                # PERBAIKAN JALUR LOKAL RESMI: Mengunci pencarian file video tepat di folder tempat file app.py berjalan online
+                base_dir = os.path.dirname(__file__)
+                video1_path = os.path.join(base_dir, "video.mp4")
+                video2_path = os.path.join(base_dir, "video_inklusi2.mp4")
                 
-                # Mengonversi kedua berkas video lokal Anda menjadi format data Base64 aman hulu
+                # Mengonversi kedua berkas video lokal menjadi format data Base64 aman hulu
                 if os.path.exists(video1_path) and os.path.exists(video2_path):
                     with open(video1_path, "rb") as f1:
                         v1_data = base64.b64encode(f1.read()).decode("utf-8")
                     with open(video2_path, "rb") as f2:
                         v2_data = base64.b64encode(f2.read()).decode("utf-8")
                         
-                    # FIX PERBAIKAN BINGKAI: Mengubah object-fit menjadi cover dan menyamakan tinggi frame ke 230px
+                    # Merender HTML5 video player kustom
                     st.components.v1.html(f"""
                         <video id="hermes_player" width="100%" height="230" controls autoplay muted style="border-radius:12px; background-color:#000; object-fit: cover; width: 100%; height: 230px;">
                             <source id="video_source" src="data:video/mp4;base64,{v1_data}" type="video/mp4">
@@ -124,7 +126,6 @@ if st.session_state.current_page == "menu_utama" or st.session_state.current_pag
                             var videoPlayer = document.getElementById('hermes_player');
                             var videoSource = document.getElementById('video_source');
                             
-                            // Menyimpan data base64 ke dalam array playlist
                             var playlist = [
                                 "data:video/mp4;base64,{v1_data}",
                                 "data:video/mp4;base64,{v2_data}"
@@ -143,7 +144,7 @@ if st.session_state.current_page == "menu_utama" or st.session_state.current_pag
                         </script>
                     """, height=240)
                 else:
-                    st.info("💡 Pastikan file 'video.mp4' dan 'video_inklusi2.mp4' sudah berada di folder proyek.")
+                    st.info("💡 Pastikan file 'video.mp4' dan 'video_inklusi2.mp4' sudah terunggah dengan benar di folder GitHub.")
             
             with tab_maps:
                 # Menampilkan Peta Lokasi Live GPS di Salatiga
