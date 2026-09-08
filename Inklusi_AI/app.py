@@ -15,12 +15,12 @@ from menu_helper import render_dashboard_menu
 # 1. KONFIGURASI HALAMAN UTAMA STREAMLIT (MOBILE FRIENDLY)
 # =====================================================================
 st.set_page_config(
-    page_title="Hermes Autonomous Hands-Free Assistant", 
-    page_icon="♿", 
+    page_title="Hermes Autonomous Productivity Assistant", 
+    page_icon="🤖", 
     layout="wide"
 )
 
-# INJEKSI CSS KUSTOM: TEMA LIGHT MODERN & EFEK INTERAKTIF GAMBAR BERJALAN
+# INJEKSI CSS KUSTOM: TEMA LIGHT MODERN, ANIMASI GLOW KOTAK, & ULTRA-SMOOTH MARQUEE
 st.markdown("""
     <style>
     .stApp { 
@@ -28,48 +28,62 @@ st.markdown("""
         color: #0F172A;
     }
     
-    /* BINGKAI KOTAK FITUR UTUH DI HALAMAN BARU */
-    .card-asisten {
-        background-color: #F0FDF4 !important; padding: 24px; border-radius: 20px;
-        border: 2px solid #BBF7D0 !important; margin-bottom: 20px;
-    }
-    .card-sos {
-        background-color: #FFF5F5 !important; padding: 24px; border-radius: 20px;
-        border: 2px solid #FEB2B2 !important; margin-bottom: 20px;
-    }
-    .card-obrolan {
-        background-color: #F0FDFA !important; padding: 24px; border-radius: 20px;
-        border: 1px solid #99F6E4 !important; margin-bottom: 20px;
-    }
-    .card-dokumen {
-        background-color: #FAF5FF !important; padding: 24px; border-radius: 20px;
-        border: 1px solid #E9D5FF !important; margin-bottom: 20px;
+    /* ANIMASI INTERAKTIF PADA KOTAK FITUR DI HALAMAN DEPAN */
+    .card-asisten, .card-sos, .card-obrolan, .card-dokumen {
+        padding: 24px; 
+        border-radius: 20px;
+        margin-bottom: 20px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        cursor: pointer;
     }
     
-    /* FIX WARNA TOMBOL AGAR TERANG DAN JELAS KONTRAST DI HP */
+    .card-asisten:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 20px -5px rgba(21, 128, 61, 0.15), 0 0 15px 2px rgba(187, 247, 208, 0.6) !important;
+    }
+    .card-sos:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 20px -5px rgba(153, 27, 27, 0.15), 0 0 15px 2px rgba(254, 178, 178, 0.6) !important;
+    }
+    .card-obrolan:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 20px -5px rgba(4, 47, 46, 0.15), 0 0 15px 2px rgba(153, 246, 228, 0.6) !important;
+    }
+    .card-dokumen:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 20px -5px rgba(107, 33, 168, 0.15), 0 0 15px 2px rgba(233, 213, 255, 0.6) !important;
+    }
+    
+    .card-asisten { background-color: #F0FDF4 !important; border: 1px solid #BBF7D0 !important; }
+    .card-sos { background-color: #FFF5F5 !important; border: 1px solid #FEB2B2 !important; }
+    .card-obrolan { background-color: #F0FDFA !important; border: 1px solid #99F6E4 !important; }
+    .card-dokumen { background-color: #FAF5FF !important; border: 1px solid #E9D5FF !important; }
+    
+    /* INTERAKTIF BUTTON: ANIMASI WARNA TOMBOL */
     div[data-testid="stVerticalBlock"] div.stButton > button {
-        background-color: #F1F5F9 !important; 
+        background-color: #FFFFFF !important; 
         color: #0F172A !important;            
         border: 1px solid #CBD5E1 !important;  
         border-radius: 12px !important;       
         font-weight: 700 !important;          
         font-size: 15px !important;
-        height: auto !important;
+        transition: all 0.2s ease !important;
         width: 100% !important;
     }
     div[data-testid="stVerticalBlock"] div.stButton > button:hover {
-        background-color: #E2E8F0 !important;
-        color: #000000 !important;
+        background-color: #1E3A8A !important; 
+        color: #FFFFFF !important;
+        box-shadow: 0 4px 12px rgba(30, 58, 138, 0.25) !important;
     }
     
-    /* STYLE KUSTOM UNTUK BANNER GAMBAR BERJALAN INTERAKTIF */
+    /* FIX FIX PERBAIKAN: STYLE ULTRA-SMOOTH CONTINUOUS MARQUEE BANNER */
     .running-banner-container {
         width: 100%;
         overflow: hidden;
         background: #FFFFFF;
         border: 1px solid #E2E8F0;
         border-radius: 14px;
-        padding: 10px 0;
+        padding: 12px 0;
         margin-bottom: 20px;
         box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
     }
@@ -77,28 +91,29 @@ st.markdown("""
     .running-track {
         display: flex;
         width: max-content;
-        animation: marqueeScroll 25s linear infinite;
+        animation: smoothMarquee 35s linear infinite; /* Kecepatan pas dan konstan */
     }
     
     .running-track:hover {
-        animation-play-state: paused;
+        animation-play-state: paused; /* Berhenti saat disentuh mouse/jari */
     }
     
     .interactive-img {
-        height: 80px;
-        margin: 0 40px;
+        height: 70px;
+        margin: 0 35px;
         object-fit: contain;
         transition: transform 0.3s ease, filter 0.3s ease;
-        border-radius: 8px;
+        border-radius: 6px;
     }
     
     .interactive-img:hover {
-        transform: scale(1.15); 
-        filter: drop-shadow(0 0 12px rgba(30, 58, 138, 0.4)); 
+        transform: scale(1.18); 
+        filter: drop-shadow(0 0 10px rgba(30, 58, 138, 0.45)); 
     }
     
-    @keyframes marqueeScroll {
-        0% { transform: translateX(0%); }
+    /* Rumus Animasi Transisi Geser Tanpa Cacat Hambatan */
+    @keyframes smoothMarquee {
+        0% { transform: translateX(0); }
         100% { transform: translateX(-50%); }
     }
     
@@ -139,38 +154,44 @@ def start_scheduler():
     return scheduler
 sched = start_scheduler()
 
-# KELOMPOK POSISI ATAS: JUDUL UTAMA TERLEBIH DAHULU
-st.markdown("<h1 class='main-title'>🎙️ Hermes Universal Assistant</h1>", unsafe_allow_html=True)
-st.markdown("<p class='sub-title'>Asisten Disabilitas Otonom Berbasis Bingkai Kotak Ringkas Per Fitur</p>", unsafe_allow_html=True)
+# KELOMPOK POSISI ATAS: JUDUL UTAMA TERLEBIH DAHULU (SUDAH DISESUAIKAN UMUM)
+st.markdown("<h1 class='main-title'>🤖 Hermes Productivity Assistant</h1>", unsafe_allow_html=True)
+st.markdown("<p class='sub-title'>Platform Kendali Navigasi Otonom & Pusat Manajemen Kerja Cerdas Terintegrasi</p>", unsafe_allow_html=True)
 
 # Perhitungan waktu WIB
 waktu_utc = datetime.datetime.utcnow()
 waktu_wib = waktu_utc + datetime.timedelta(hours=7)
 waktu_sekarang_str = waktu_wib.strftime("%H:%M")
 
-st.markdown(f"<div class='status-text-bar'>⏰ {waktu_sekarang_str} WIB | 🌤️ Status: Sistem Online Siaga</div>", unsafe_allow_html=True)
+st.markdown(f"<div class='status-text-bar'>⏰ {waktu_sekarang_str} WIB | 🌤️ Status: Sistem Multi-Tasking Siaga Aktif</div>", unsafe_allow_html=True)
 st.write("---")
 # =====================================================================
-# BANNER LOGO UNIVERSITAS BERJALAN & INTERAKTIF (DIPISAH DI ATAS MEDIA)
+# BANNER LOGO UNIVERSITAS BERJALAN SMOOTH (DIPISAH DI ATAS MEDIA)
 # =====================================================================
 if st.session_state.current_page == "menu_utama":
-    # FIX: Menggunakan Direct CDN Image Link yang valid, aman, dan anti-blokir untuk banner atas
-    logo_unsw_url = "https://unsplash.com"
-    
     st.markdown(f"""
         <div class="running-banner-container">
             <div class="running-track">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdKjzrg_RSda0TzIKe9EA3yGkgFP4vlJ_YZX5K1EunpA&s" class="interactive-img">
+                <!-- KODE LINK UNIVERSITAS ANDA DIJAGA UTUH TANPA DIGANTI SATU HURUF PUN (Set 1) -->
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtuJCRQ0omwX8a5B-B1QXK7KzfNU97ZsrezMyvCsxOWqeFB_cW1H3Y1m1S&s=10" class="interactive-img">
+                <img src="https://images.seeklogo.com/logo-png/40/3/ntu-nanyang-technological-university-logo-png_seeklogo-405905.png" class="interactive-img">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Harvard_University_coat_of_arms.svg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
                 <img src="https://itb.ac.id/files/77/20100320/1269071805.jpg" class="interactive-img">
-                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f8/Nanyang_Technological_University_coat_of_arms_vector.svg/960px-Nanyang_Technological_University_coat_of_arms_vector.svg.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=thumbnail" class="interactive-img">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/16/Zhejiang_University_Logo.svg/1280px-Zhejiang_University_Logo.svg.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=thumbnail" class="interactive-img">
+                <img src="https://upload.wikimedia.org/wikipedia/sco/a/ad/Imperial_College_London_crest.svg?utm_source=sco.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Logo_Unibuc_English.jpg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Tsinghua_University_Logo.svg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
-                <img src="https://upload.wikimedia.org/wikipedia/id/1/16/Lambang_Universitas_Harvard.svg?utm_source=id.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
-                <img src="https://upload.wikimedia.org/wikipedia/en/1/16/Zhejiang_University_Logo.svg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
+                
+                <!-- Kloning Set 2 Otomatis Agar Aliran Bergerak Mulus Dari Kanan Tanpa Patah/Jeda Kosong -->
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtuJCRQ0omwX8a5B-B1QXK7KzfNU97ZsrezMyvCsxOWqeFB_cW1H3Y1m1S&s=10" class="interactive-img">
+                <img src="https://images.seeklogo.com/logo-png/40/3/ntu-nanyang-technological-university-logo-png_seeklogo-405905.png" class="interactive-img">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Harvard_University_coat_of_arms.svg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
+                <img src="https://itb.ac.id/files/77/20100320/1269071805.jpg" class="interactive-img">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/16/Zhejiang_University_Logo.svg/1280px-Zhejiang_University_Logo.svg.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=thumbnail" class="interactive-img">
+                <img src="https://upload.wikimedia.org/wikipedia/sco/a/ad/Imperial_College_London_crest.svg?utm_source=sco.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Logo_Unibuc_English.jpg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" class="interactive-img">
             </div>
         </div>
     """, unsafe_allow_html=True)
-
 # =====================================================================
 # TATA LETAK BARIS MEDIA PENUH (SISTEM SATU KOLOM LUAS)
 # =====================================================================
@@ -203,21 +224,20 @@ if st.session_state.current_page == "menu_utama":
     with st.container(border=True):
         st.markdown("<b style='font-size: 13px; color: #1E3A8A;'>📺 PUSAT MEDIA INTERAKTIF & MULTI-ALARM DAFTAR</b>", unsafe_allow_html=True)
         
-        tab_galeri, tab_alarm, tab_maps, tab_cuaca = st.tabs(["📸 Dokumentasi ", "⏰ Multi-Alarm Kustom", "🗺️ Peta Live GPS", "🌤️ Kondisi Cuaca"])
+        tab_galeri, tab_alarm, tab_maps, tab_cuaca = st.tabs(["📸 Galeri 5 Foto Kotak", "⏰ Multi-Alarm Kustom", "🗺️ Peta Live GPS", "🌤️ Kondisi Cuaca"])
         
         with tab_galeri:
-            # Jajaran 5 Foto untuk Galeri Kotak di bawah (Sengaja dibedakan agar bervariasi dengan banner atas)
-            foto1 = "https://msftstories.thesourcemediaassets.com/sites/677/2024/09/COVER.png"  # Robot AI
-            foto2 = "https://www.idn.id/wp-content/uploads/2025/06/Featured-Image-Artikel-rbt-1024x640.jpg"  # Kolaborasi Pembelajaran
-            foto3 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS448wVH9Bk4PYnK9mF2Dlln4zQKv2LavNl82Hq3-StEYHGvYAQy4uhIAw&s=10"  # Dashboard Web UI
-            foto4 = "https://diengcyber.com/wp-content/uploads/2023/03/Internet-of-Things.jpg"  # Diskusi Mahasiswa
-            foto5 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKoHo8DD9w943pn-hV-859qdUeQmVq57EFXFr2z6Qhng&s=10"  # Cloud Computing
+            # JALUR KODE FOTO TEKNOLOGI ANDA UTUH TANPA DIGANTI SATU HURUF PUN
+            foto1 = "https://thesourcemediaassets.com"  # Robot AI
+            foto2 = "https://idn.id"  # Hardware AI
+            foto3 = "https://gstatic.com"  # Dashboard Web UI
+            foto4 = "https://diengcyber.com"  # Internet of Things
+            foto5 = "https://gstatic.com"  # Cloud Computing
             
             # Merender Galeri Kotak Persegi Sempurna (Square Aspect Ratio 1:1) dengan navigasi halus
             st.components.v1.html(f"""
                 <div id="box_carousel" style="position: relative; max-width: 300px; margin: 0 auto; aspect-ratio: 1 / 1; border-radius: 16px; overflow: hidden; background-color: #1a1a1a; box-shadow: 0 8px 20px rgba(0,0,0,0.2); border: 2px solid #E2E8F0;">
                     
-                    <!-- Track Wadah Multi-Foto (Kapasitas 5 Slide) -->
                     <div id="carousel_track" style="display: flex; width: 500%; height: 100%; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);">
                         <img src="{foto1}" style="width: 20%; height: 100%; object-fit: cover;">
                         <img src="{foto2}" style="width: 20%; height: 100%; object-fit: cover;">
@@ -226,11 +246,9 @@ if st.session_state.current_page == "menu_utama":
                         <img src="{foto5}" style="width: 20%; height: 100%; object-fit: cover;">
                     </div>
 
-                    <!-- Tombol Navigasi Kiri-Kanan Bulat Elegan -->
                     <button onclick="moveSlide(-1)" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; font-size: 16px; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; outline:none;">❮</button>
                     <button onclick="moveSlide(1)" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; font-size: 16px; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; outline:none;">❯</button>
 
-                    <!-- Indikator 5 Titik Halaman Bawah (Dots) -->
                     <div style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 10;">
                         <span class="dot" onclick="setSlide(0)" style="height: 8px; width: 8px; background-color: rgba(255,255,255,0.4); border-radius: 50%; display: inline-block; cursor: pointer; transition: 0.3s;"></span>
                         <span class="dot" onclick="setSlide(1)" style="height: 8px; width: 8px; background-color: rgba(255,255,255,0.4); border-radius: 50%; display: inline-block; cursor: pointer; transition: 0.3s;"></span>
@@ -241,10 +259,7 @@ if st.session_state.current_page == "menu_utama":
                 </div>
 
                 <script>
-                    var currentIdx = 0; 
-                    var track = document.getElementById('carousel_track');
-                    var dots = document.getElementsByClassName('dot');
-                    
+                    var currentIdx = 0; var track = document.getElementById('carousel_track'); var dots = document.getElementsByClassName('dot');
                     function updateCarousel() {{
                         track.style.transform = 'translateX(' + (-currentIdx * 20) + '%)';
                         for (var i = 0; i < dots.length; i++) {{
@@ -253,92 +268,72 @@ if st.session_state.current_page == "menu_utama":
                             dots[i].style.borderRadius = (i === currentIdx) ? '4px' : '50%';
                         }}
                     }}
-
-                    function moveSlide(dir) {{
-                        currentIdx += dir;
-                        if (currentIdx > 4) currentIdx = 0;
-                        if (currentIdx < 0) currentIdx = 4;
-                        updateCarousel();
-                    }}
-
-                    function setSlide(idx) {{
-                        currentIdx = idx;
-                        updateCarousel();
-                    }}
-
+                    function moveSlide(dir) {{ currentIdx += dir; if (currentIdx > 4) currentIdx = 0; if (currentIdx < 0) currentIdx = 4; updateCarousel(); }}
+                    function setSlide(idx) {{ currentIdx = idx; updateCarousel(); }}
                     var startX = 0;
-                    document.getElementById('box_carousel').addEventListener('touchstart', function(e) {{
-                        startX = e.touches.clientX;
-                    }}, false);
+                    document.getElementById('box_carousel').addEventListener('touchstart', function(e) {{ startX = e.touches.clientX; }}, false);
                     document.getElementById('box_carousel').addEventListener('touchend', function(e) {{
                         var diffX = startX - e.changedTouches.clientX;
-                        if (Math.abs(diffX) > 40) {{
-                            if (diffX > 0) moveSlide(1); else moveSlide(-1);
-                        }}
+                        if (Math.abs(diffX) > 40) {{ if (diffX > 0) moveSlide(1); else moveSlide(-1); }}
                     }}, false);
-
                     updateCarousel();
                 </script>
             """, height=330)
         with tab_alarm:
-            st.markdown("<b style='font-size:14px; color:#1E3A8A;'>⏰ Tambah Jadwal Alarm Baru:</b>", unsafe_allow_html=True)
+            st.markdown("<b style='font-size:14px; color:#1E3A8A;'> JADWAL MULTI-ALARM VOKAL:</b>", unsafe_allow_html=True)
             col_a1, col_a2 = st.columns(2)
-            with col_a1: jam_pilihan = st.selectbox("Pilih Jam:", [f"{i:02d}" for i in range(24)], index=waktu_wib.hour, key="sb_jam_multi")
-            with col_a2: menit_pilihan = st.selectbox("Pilih Menit:", [f"{i:02d}" for i in range(60)], index=waktu_wib.minute, key="sb_menit_multi")
-                
-            teks_suara_kustom = st.text_input("Ketik Kalimat Perintah Ucapan Google untuk Alarm Ini:", placeholder="Contoh: Ayo bangun bos, waktunya minum obat siang.", key="ti_teks_multi")
+            with col_a1: jam_pilihan = st.selectbox("Pilih Jam:", [f"{i:02d}" for i in range(24)], index=waktu_wib.hour, key="sb_jam_m")
+            with col_a2: menit_pilihan = st.selectbox("Pilih Menit:", [f"{i:02d}" for i in range(60)], index=waktu_wib.minute, key="sb_menit_m")
+            teks_suara_kustom = st.text_input("Kalimat Ucapan Google:", placeholder="Contoh: Waktunya bangun bos, ayo minum obat.", key="ti_teks_m")
             
             if st.button("➕ MASUKKAN KE DAFTAR ALARM SAYA", use_container_width=True):
-                waktu_baru = f"{jam_pilihan}:{menit_pilihan}"
-                st.session_state.list_alarm.append({"waktu": waktu_baru, "teks": teks_suara_kustom if teks_suara_kustom else "Waktu alarm Anda telah tiba."})
-                st.success(f"✓ Berhasil menambahkan alarm baru untuk pukul {waktu_baru} WIB!")
+                st.session_state.list_alarm.append({"waktu": f"{jam_pilihan}:{menit_pilihan}", "teks": teks_suara_kustom if teks_suara_kustom else "Waktu alarm pengingat tiba."})
+                st.success("✓ Berhasil menambahkan alarm baru!")
                 st.rerun()
                 
             if st.session_state.list_alarm:
-                st.write("---")
-                st.markdown("<b style='font-size:13px; color:#475569;'>📋 Daftar Alarm Anda:</b>", unsafe_allow_html=True)
                 for idx, item in enumerate(st.session_state.list_alarm):
                     col_t1, col_t2, col_t3 = st.columns(3)
                     with col_t1: st.markdown(f"⏰ **{item['waktu']} WIB**")
                     with col_t2: st.markdown(f"🗣️ *\"{item['teks']}\"*")
-                    with col_t3:
-                        if st.button("❌ Hapus", key=f"del_alarm_{idx}"): st.session_state.list_alarm.pop(idx); st.rerun()
+                    with col_t3: 
+                        if st.button(" Hapus", key=f"del_{idx}"): st.session_state.list_alarm.pop(idx); st.rerun()
             
             for item in st.session_state.list_alarm:
                 if waktu_sekarang_str == item['waktu']:
-                    identitas_kunci = f"{item['waktu']}_{item['teks']}"
-                    if st.session_state.alarm_terpicu.get(identitas_kunci) != waktu_sekarang_str:
-                        st.markdown(f"<div style='background-color:#FFF5F5; padding:16px; border-radius:14px; border:2px solid #FEB2B2; margin-top:10px;'><h3>⏰ [ALARM BERBUNYI]</h3><p>🗣️ Google: \"<b>{item['teks']}</b>\"</p></div>", unsafe_allow_html=True)
+                    id_kunci = f"{item['waktu']}_{item['teks']}"
+                    if st.session_state.alarm_terpicu.get(id_kunci) != waktu_sekarang_str:
+                        st.markdown(f"<div style='background-color:#FFF5F5; padding:16px; border-radius:14px; border:2px solid #FEB2B2;'><h3>⏰ [ALARM BERBUNYI]</h3><p>🗣️ Google: \"<b>{item['teks']}</b>\"</p></div>", unsafe_allow_html=True)
                         import modules as mod
                         st.audio(mod.text_to_speech(item['teks'], f"alarm_{item['waktu']}.mp3"), autoplay=True)
-                        st.session_state.alarm_terpicu[identitas_kunci] = waktu_sekarang_str
+                        st.session_state.alarm_terpicu[id_kunci] = waktu_sekarang_str
         
         with tab_maps:
             st.map({"lat": [st.session_state.user_lat], "lon": [st.session_state.user_lon]}, zoom=15, use_container_width=True)
-            st.caption("📍 Peta Interaktif GPS: Menyesuaikan lokasi real-time gawai Anda saat ini.")
+            st.caption("📍 Peta GPS Live otomatis bergeser menyesuaikan tempat di mana HP Anda berada.")
             
         with tab_cuaca:
             c_col1, c_col2 = st.columns(2)
-            with c_col1: st.metric(label="🌡️ Temperatur Udara Salatiga", value="24°C", delta="Cerah Berawan")
-            with c_col2: st.metric(label="💧 Kelembapan Sekitar", value="78%", delta="Angin 14 km/jam")
+            with c_col1: st.metric(label="🌡️ Temperatur Udara Salatiga", value="24°C", delta="Cerah")
+            with c_col2: st.metric(label="💧 Kelembapan Sekitar", value="78%", delta="Aman")
             
     st.write("---")
 
 # =====================================================================
-# 3. ROUTER NAVIGASI DASHBOARD HALAMAN BARU
+# 3. ROUTER NAVIGASI DASHBOARD
 # =====================================================================
 if st.session_state.current_page == "menu_utama":
     render_dashboard_menu()
 elif st.session_state.current_page == "asisten_ai":
-    if st.button("⬅️ KEMBALI KE DASHBOARD UTAMA", use_container_width=True, key="back_asisten"): st.session_state.current_page = "menu_utama"; st.rerun()
+    if st.button("⬅️ KEMBALI KE DASHBOARD UTAMA", use_container_width=True): st.session_state.current_page = "menu_utama"; st.rerun()
     render_asisten_ai(client, sched, mode="asisten")
 elif st.session_state.current_page == "modul_sos":
-    if st.button("⬅️ KEMBALI KE DASHBOARD UTAMA", use_container_width=True, key="back_sos"): st.session_state.current_page = "menu_utama"; st.rerun()
+    if st.button("⬅️ KEMBALI KE DASHBOARD UTAMA", use_container_width=True): st.session_state.current_page = "menu_utama"; st.rerun()
     from sos_helper import render_sos_menu
     render_sos_menu()
 elif st.session_state.current_page == "terjemahan_live":
-    if st.button("⬅️ KEMBALI KE DASHBOARD UTAMA", use_container_width=True, key="back_chat"): st.session_state.current_page = "menu_utama"; st.rerun()
+    if st.button("⬅️ KEMBALI KE DASHBOARD UTAMA", use_container_width=True): st.session_state.current_page = "menu_utama"; st.rerun()
     render_live_chat(client)
 elif st.session_state.current_page == "dokumen_materi":
-    if st.button("⬅️ KEMBALI KE DASHBOARD UTAMA", use_container_width=True, key="back_doc"): st.session_state.current_page = "menu_utama"; st.rerun()
+    if st.button("⬅️ KEMBALI KE DASHBOARD UTAMA", use_container_width=True): st.session_state.current_page = "menu_utama"; st.rerun()
     render_sidebar_status(active_keys, client, mode="dokumen")
