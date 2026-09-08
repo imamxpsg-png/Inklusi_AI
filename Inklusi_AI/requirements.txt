@@ -3,3 +3,6 @@ google-genai
 streamlit-mic-recorder
 Pillow
 apscheduler
+gTTS
+pypdf
+python-docx
