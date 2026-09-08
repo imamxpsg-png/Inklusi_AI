@@ -112,9 +112,9 @@ if st.session_state.current_page == "menu_utama":
             with tab_galeri:
                 # Tautan URL gambar ilustrasi beresolusi tinggi dari server cloud publik 
                 # (Sangat ringan, 100% anti-crash, dan responsif digeser pakai jari di HP)
-                foto1_url = "https://pin.it/3vfTiks4K"
-                foto2_url = "https://unsplash.com"
-                foto3_url = "https://unsplash.com"
+                foto1_url = "https://www.idn.id/belajar-dasar-robotik-hardware-software-dan-sensor/"
+                foto2_url = "https://news.microsoft.com/ai/"
+                foto3_url = "https://course-net.com/blog/cloud-computing-pengertian-cara-kerja-dan-contohnya/"
                 
                 # Merender komponen slider/carousel foto interaktif murni menggunakan HTML/CSS/JS Swiper
                 st.components.v1.html(f"""
